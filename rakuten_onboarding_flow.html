@@ -1,0 +1,573 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Outfit:wght@300;400;600;700;800&display=swap');
+
+  :root {
+    --crimson: #BF0000;
+    --crimson-dark: #8C0000;
+    --crimson-light: #FF2626;
+    --cream: #FDF8F4;
+    --warm-white: #FAFAFA;
+    --charcoal: #1A1A1A;
+    --mid-gray: #6B6B6B;
+    --light-gray: #E8E0D8;
+    --border: #D4C8BC;
+    --success: #2D7A4F;
+    --nav-inactive: #C8BDB4;
+    --shadow-soft: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-card: 0 8px 40px rgba(0,0,0,0.12);
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── TOP HEADER ── */
+  .header {
+    background: var(--charcoal);
+    padding: 0 28px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--crimson-light);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: #fff; }
+
+  /* ── STEP NAVIGATION ── */
+  .nav-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .nav-step {
+    display: flex;
+    align-items: center;
+  }
+  .step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2.5px solid var(--nav-inactive);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nav-inactive);
+    background: #fff;
+    transition: var(--transition);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .step-circle.active {
+    border-color: var(--crimson);
+    color: #fff;
+    background: var(--crimson);
+    box-shadow: 0 0 0 4px rgba(191,0,0,0.12);
+  }
+  .step-circle.done {
+    border-color: var(--success);
+    background: var(--success);
+    color: #fff;
+  }
+  .step-circle.done::after {
+    content: '✓';
+    font-size: 14px;
+  }
+  .step-circle.done .step-num { display: none; }
+  .connector {
+    width: 32px;
+    height: 2px;
+    background: var(--border);
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+  .connector.done { background: var(--success); }
+  .connector.active { background: var(--crimson); }
+
+  /* ── MAIN CONTENT AREA ── */
+  .main {
+    min-height: calc(100vh - 56px - 74px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    max-width: 560px;
+    padding: 52px 48px 44px;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--crimson), var(--crimson-light));
+  }
+
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(191,0,0,0.08);
+    color: var(--crimson);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .step-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--crimson);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .card-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--charcoal);
+    line-height: 1.2;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+  .card-subtitle {
+    font-size: 15px;
+    color: var(--mid-gray);
+    line-height: 1.6;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--crimson);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+    letter-spacing: 0.2px;
+  }
+  .btn-primary:hover {
+    background: var(--crimson-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(191,0,0,0.3);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-primary.btn-finish {
+    background: var(--success);
+  }
+  .btn-primary.btn-finish:hover {
+    background: #1e5c3a;
+    box-shadow: 0 8px 24px rgba(45,122,79,0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--mid-gray);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+  }
+  .btn-secondary:hover {
+    border-color: var(--mid-gray);
+    color: var(--charcoal);
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .btn-row-h {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ── SPECIAL ELEMENTS ── */
+  .info-box {
+    background: rgba(191,0,0,0.05);
+    border: 1px solid rgba(191,0,0,0.15);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .info-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .info-text { font-size: 14px; color: var(--charcoal); line-height: 1.6; }
+  .info-text strong { color: var(--crimson); }
+
+  .highlight-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--crimson);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(191,0,0,0.3);
+    padding-bottom: 1px;
+    cursor: pointer;
+    transition: var(--transition);
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .highlight-link:hover { border-bottom-color: var(--crimson); }
+
+  /* ── PAGE 1 SPECIAL HERO ── */
+  .hero-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--crimson), var(--crimson-light));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(191,0,0,0.25);
+  }
+
+  /* ── PROGRESS ── */
+  .progress-area {
+    margin-bottom: 28px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--mid-gray);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--light-gray);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--crimson), var(--crimson-light));
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ── PAGE 8 COMPLETE ── */
+  .complete-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #2D7A4F, #3DA667);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 32px rgba(45,122,79,0.3);
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .complete-card { text-align: center; }
+  .checklist {
+    text-align: left;
+    margin: 20px 0 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .check-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--charcoal);
+    background: #F5FAF7;
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+  .check-dot {
+    width: 20px; height: 20px;
+    background: var(--success);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 520px) {
+    .card { padding: 36px 24px 32px; }
+    .card-title { font-size: 22px; }
+    .connector { width: 20px; }
+    .btn-row-h { grid-template-columns: 1fr; }
+  }
+
+  /* Arrow icon */
+  .arrow { font-size: 18px; transition: transform 0.2s; }
+  .btn-primary:hover .arrow { transform: translateX(4px); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">Rakuten<span> Mobile</span></div>
+  <div style="font-size:12px;color:#888;font-weight:500;">Sales Registration</div>
+</div>
+
+<!-- NAV BAR -->
+<div class="nav-bar" id="navBar"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+  // ── STATE ──
+  let currentPage = 1;
+  const totalPages = 8;
+
+  // ── NAV RENDER ──
+  function renderNav() {
+    const nav = document.getElementById('navBar');
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+      let cls = 'step-circle';
+      if (i < currentPage) cls += ' done';
+      else if (i === currentPage) cls += ' active';
+
+      html += `<div class="nav-step">
+        <div class="${cls}"><span class="step-num">${i}</span></div>
+      </div>`;
+      if (i < totalPages) {
+        let connCls = 'connector';
+        if (i < currentPage) connCls += ' done';
+        else if (i === currentPage) connCls += ' active';
+        html += `<div class="${connCls}"></div>`;
+      }
+    }
+    nav.innerHTML = html;
+  }
+
+  // ── PROGRESS ──
+  function progressHtml(page) {
+    const pct = Math.round(((page - 1) / (totalPages - 1)) * 100);
+    return `<div class="progress-area">
+      <div class="progress-label"><span>Progress</span><span>${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }
+
+  // ── PAGE DEFINITIONS ──
+  const pages = {
+    1: () => `
+      <div class="hero-icon">🚀</div>
+      <div class="step-badge"><span class="dot"></span>Welcome</div>
+      <h1 class="card-title">Start Your<br>Rakuten Journey</h1>
+      <p class="card-subtitle">Follow this guided registration flow to complete your customer setup. It only takes a few minutes.</p>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goTo(2)">Start Journey <span class="arrow">→</span></button>
+      </div>
+    `,
+    2: () => `
+      ${progressHtml(2)}
+      <div class="step-badge"><span class="dot"></span>Step 1 of 7 — Device Check</div>
+      <h1 class="card-title">Is the phone usable?</h1>
+      <p class="card-subtitle">Confirm whether the customer's current handset is functional and ready for registration.</p>
+      <div class="btn-row-h">
+        <button class="btn-primary" onclick="goTo(3)">✓ Yes, Usable <span class="arrow">→</span></button>
+        <button class="btn-secondary" onclick="showAlert('Please resolve handset issue before proceeding.')">✗ Not Usable</button>
+      </div>
+    `,
+    3: () => `
+      ${progressHtml(3)}
+      <div class="step-badge"><span class="dot"></span>Step 2 of 7 — New Customer</div>
+      <h1 class="card-title">First time with Rakuten Mobile?</h1>
+      <p class="card-subtitle">Let us know if this is the customer's first experience with Rakuten Mobile services.</p>
+      <div class="btn-row-h">
+        <button class="btn-primary" onclick="goTo(4)">Yes, First Time <span class="arrow">→</span></button>
+        <button class="btn-secondary" onclick="goTo(4)">No, Returning</button>
+      </div>
+    `,
+    4: () => `
+      ${progressHtml(4)}
+      <div class="step-badge"><span class="dot"></span>Step 3 of 7 — Registration Type</div>
+      <h1 class="card-title">New Registration or MNP?</h1>
+      <p class="card-subtitle">Select the type of contract being applied for this customer.</p>
+      <div class="info-box">
+        <span class="info-icon">ℹ️</span>
+        <div class="info-text"><strong>MNP</strong> (Mobile Number Portability) — customer keeps their existing phone number from another carrier.</div>
+      </div>
+      <div class="btn-row-h">
+        <button class="btn-primary" onclick="goTo(5)">📱 New Registration</button>
+        <button class="btn-secondary" onclick="goTo(5)">🔄 MNP Transfer</button>
+      </div>
+    `,
+    5: () => `
+      ${progressHtml(5)}
+      <div class="step-badge"><span class="dot"></span>Step 4 of 7 — Age Verification</div>
+      <h1 class="card-title">Is the customer 65 or older?</h1>
+      <p class="card-subtitle">Senior customers require an additional manual entry in the system before proceeding.</p>
+      <div class="info-box">
+        <span class="info-icon">📋</span>
+        <div class="info-text">If <strong>Yes</strong>: please complete the senior entry form in the system before clicking Next.</div>
+      </div>
+      <div class="btn-row-h">
+        <button class="btn-primary" onclick="goTo(6)">✓ Yes — Entry Done <span class="arrow">→</span></button>
+        <button class="btn-secondary" onclick="goTo(6)">Under 65 — Skip</button>
+      </div>
+    `,
+    6: () => `
+      ${progressHtml(6)}
+      <div class="step-badge"><span class="dot"></span>Step 5 of 7 — Shoptimizer</div>
+      <h1 class="card-title">Time to get Shoptimizer!</h1>
+      <p class="card-subtitle">Set up Shoptimizer for the customer to unlock exclusive cashback and savings on every purchase.</p>
+      <div class="info-box">
+        <span class="info-icon">🛍️</span>
+        <div class="info-text">Shoptimizer links the customer's Rakuten account for <strong>automatic point collection</strong> and deal alerts.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="goTo(7)">Set Up Shoptimizer <span class="arrow">→</span></button>
+      </div>
+    `,
+    7: () => `
+      ${progressHtml(7)}
+      <div class="step-badge"><span class="dot"></span>Step 6 of 7 — Coupon</div>
+      <h1 class="card-title">Does the customer have a coupon code?</h1>
+      <p class="card-subtitle">If a promotional coupon was issued, apply it now before completing registration.</p>
+      <div class="btn-row">
+        <button class="btn-primary" style="background:#333;margin-bottom:4px" onclick="showAlert('Coupon link opened — please add the coupon, then click Next.')">🎫 Yes — Add Coupon Code</button>
+        <button class="btn-primary" onclick="goTo(8)">No Coupon — Continue <span class="arrow">→</span></button>
+        <button class="btn-secondary" onclick="goTo(8)">Coupon Added — Next →</button>
+      </div>
+    `,
+    8: () => `
+      <div class="complete-card">
+        <div class="complete-icon">✓</div>
+        <div class="step-badge" style="display:inline-flex;margin-bottom:16px"><span class="dot" style="background:var(--success)"></span>All Steps Complete</div>
+        <h1 class="card-title">You're good to go!</h1>
+        <p class="card-subtitle">All checks are done. Continue the remaining registration steps in the system.</p>
+        <div class="checklist">
+          <div class="check-item"><div class="check-dot">✓</div>Device verified</div>
+          <div class="check-item"><div class="check-dot">✓</div>Customer profile set</div>
+          <div class="check-item"><div class="check-dot">✓</div>Registration type selected</div>
+          <div class="check-item"><div class="check-dot">✓</div>Age check completed</div>
+          <div class="check-item"><div class="check-dot">✓</div>Shoptimizer configured</div>
+          <div class="check-item"><div class="check-dot">✓</div>Coupon status recorded</div>
+        </div>
+        <button class="btn-primary btn-finish" onclick="finishAndReset()">🎉 Finish & Return to Home</button>
+      </div>
+    `
+  };
+
+  // ── NAVIGATION ──
+  function goTo(page) {
+    currentPage = page;
+    render();
+  }
+
+  function finishAndReset() {
+    currentPage = 1;
+    render();
+  }
+
+  function showAlert(msg) {
+    const box = document.createElement('div');
+    box.style.cssText = `position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1A1A1A;color:#fff;padding:14px 24px;border-radius:12px;font-size:14px;font-family:Outfit,sans-serif;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,0.25);max-width:360px;text-align:center;animation:slideIn .3s ease`;
+    box.textContent = msg;
+    document.body.appendChild(box);
+    setTimeout(() => box.remove(), 3000);
+  }
+
+  // ── MAIN RENDER ──
+  function render() {
+    renderNav();
+    const card = document.getElementById('card');
+    card.style.animation = 'none';
+    card.offsetHeight; // reflow
+    card.style.animation = '';
+    card.innerHTML = pages[currentPage]();
+  }
+
+  render();
+</script>
+</body>
+</html>
